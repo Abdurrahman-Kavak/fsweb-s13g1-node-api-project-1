@@ -1,6 +1,7 @@
 // SUNUCUYU BU DOSYAYA KURUN
 const express = require("express");
 const User = require("./users/model");
+const cors = require("cors");
 const server = express();
 
 server.use(express.json());
