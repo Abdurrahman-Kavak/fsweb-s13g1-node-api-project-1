@@ -113,7 +113,7 @@ function App() {
               {user.name}
             </h3>
             <p className="text-gray-600">{user.bio}</p>
-            <div className="flex gap-2 mt-4">
+            <div className="flex gap-2 mt-4 justify-end">
               <button
                 onClick={() => handleEdit(user)}
                 className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded transition-colors cursor-pointer"
