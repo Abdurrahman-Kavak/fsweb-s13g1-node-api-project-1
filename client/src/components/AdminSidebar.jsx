@@ -7,6 +7,8 @@ export default function AdminSidebar({
   setSelectedUser,
   setIsAdding,
   setIsAddingAuth,
+  isAdding,
+  isAddingAuth,
   handleDelete,
   handleAuthDelete,
 }) {
@@ -14,7 +16,9 @@ export default function AdminSidebar({
   const displayUsers = activeTab === "users" ? users : authUsers;
 
   return (
-    <div className="w-1/3 min-w-[320px] max-w-[400px] bg-white border-r border-gray-200 flex flex-col shadow-sm z-10">
+    <div
+      className={`${selectedUser || isAdding || isAddingAuth ? "hidden md:flex" : "flex"} w-full md:w-1/3 md:min-w-[320px] md:max-w-[400px] bg-white border-r border-gray-200 flex-col shadow-sm z-10`}
+    >
       {/* 0'a 0 Bütünleşik Sekmeler (Tabs) */}
       <div className="flex w-full">
         <button

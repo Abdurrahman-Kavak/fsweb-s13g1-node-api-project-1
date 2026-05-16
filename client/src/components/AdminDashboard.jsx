@@ -163,10 +163,14 @@ export default function AdminDashboard({
           setSelectedUser={setSelectedUser}
           setIsAdding={setIsAdding}
           setIsAddingAuth={setIsAddingAuth}
+          isAdding={isAdding}
+          isAddingAuth={isAddingAuth}
           handleDelete={handleDelete}
           handleAuthDelete={handleAuthDelete}
         />
-        <div className="flex-1 bg-slate-100/50 flex flex-col overflow-y-auto">
+        <div
+          className={`${!(isAdding || isAddingAuth || selectedUser) ? "hidden md:flex" : "flex"} flex-1 bg-slate-100/50 flex-col overflow-y-auto`}
+        >
           {!isAdding && !isAddingAuth && !selectedUser ? (
             <div className="flex-1 flex items-center justify-center">
               <h2 className="text-4xl font-light text-gray-300">

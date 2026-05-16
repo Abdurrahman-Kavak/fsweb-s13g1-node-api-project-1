@@ -1,22 +1,44 @@
 import ActionLogs from "./ActionLogs";
 
-export default function UserDetail({ user, logs = [], userRole }) {
+export default function UserDetail({ user, logs = [], userRole, onBack }) {
   if (!user) return null;
   return (
-    <div className="flex-1 p-8 w-full max-w-7xl mx-auto">
+    <div className="flex-1 p-4 sm:p-8 w-full max-w-7xl mx-auto">
       <div className="flex flex-col lg:flex-row gap-8 items-start">
         <div className="flex-1 w-full">
-          <h2 className="text-3xl font-bold text-gray-800 mb-6 pb-4 border-b border-gray-200">
-            {user.email ? "Yetkili Bilgileri" : "Kullanıcı Bilgileri"}
-          </h2>
+          <div className="flex items-center gap-4 mb-6 pb-4 border-b border-gray-200">
+            {onBack && (
+              <button
+                onClick={onBack}
+                className="md:hidden p-2 -ml-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors cursor-pointer"
+              >
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M15 19l-7-7 7-7"
+                  ></path>
+                </svg>
+              </button>
+            )}
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-800">
+              {user.email ? "Yetkili Bilgileri" : "Kullanıcı Bilgileri"}
+            </h2>
+          </div>
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
             {/* Profil Kartı Arka Plan Dekoru */}
             <div className="bg-gradient-to-r from-indigo-500 to-indigo-700 h-24 w-full"></div>
 
-            <div className="px-8 pb-8 flex flex-col">
-              <div className="flex justify-between items-center mt-[-48px] mb-6">
-                <div className="bg-white px-4 py-2 rounded-t-lg">
-                  <h3 className="text-2xl font-bold text-gray-900">
+            <div className="px-4 sm:px-8 pb-4 sm:pb-8 flex flex-col">
+              <div className="flex justify-between items-end mt-[-32px] sm:mt-[-48px] mb-4 sm:mb-6">
+                <div className="bg-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-t-lg ml-2 sm:ml-0">
+                  <h3 className="text-xl sm:text-2xl font-bold text-gray-900">
                     {user.name}
                   </h3>
                 </div>

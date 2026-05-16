@@ -55,12 +55,12 @@ export default function AuthUserForm({
 
   return (
     <div className="flex flex-col min-h-full w-full relative">
-      <div className="flex-1 p-8 w-full max-w-7xl mx-auto">
+      <div className="flex-1 p-4 sm:p-8 w-full max-w-7xl mx-auto">
         <div
           className={`flex flex-col gap-8 items-start ${user ? "lg:flex-row" : ""}`}
         >
           <div className={user ? "flex-1 w-full" : "max-w-2xl mx-auto w-full"}>
-            <h2 className="text-3xl font-bold text-gray-800 mb-6 pb-4 border-b border-gray-200">
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-4 sm:mb-6 pb-4 border-b border-gray-200">
               {user
                 ? "Sistem Yetkilisini Düzenle"
                 : "Yeni Sistem Yetkilisi Ekle"}
@@ -71,7 +71,7 @@ export default function AuthUserForm({
                 onSubmit={handleSubmit}
                 className="flex flex-col"
               >
-                <div className="p-8 flex flex-col gap-6">
+                <div className="p-5 sm:p-8 flex flex-col gap-4 sm:gap-6">
                   <div className="flex flex-col gap-2">
                     <label className="text-sm font-semibold text-gray-700">
                       İsim Soyisim
@@ -148,7 +148,7 @@ export default function AuthUserForm({
           </div>
           {user && (
             <div className="flex-1 w-full">
-              <h2 className="text-3xl font-bold text-gray-800 mb-6 pb-4 border-b border-gray-200">
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-4 sm:mb-6 pb-4 border-b border-gray-200">
                 İşlem Geçmişi
               </h2>
               <ActionLogs logs={logs} userRole={userRole} />
@@ -158,19 +158,19 @@ export default function AuthUserForm({
       </div>
 
       {/* Main Context Genişliğinde Sabit Alt Buton Bloğu */}
-      <div className="sticky bottom-0 w-full bg-gray-50 border-t border-gray-200 border-b-2 border-b-indigo-600 py-[15px] px-8 flex items-center justify-between z-50">
-        <div className="flex gap-4">
+      <div className="sticky bottom-0 w-full bg-gray-50 border-t border-gray-200 border-b-2 border-b-indigo-600 p-4 sm:py-[15px] sm:px-8 flex flex-col sm:flex-row items-center justify-between z-50 gap-3 sm:gap-0">
+        <div className="flex w-full sm:w-auto gap-3 sm:gap-4">
           <button
             type="submit"
             form="auth-user-form"
-            className="px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-bold shadow-md transition-colors cursor-pointer"
+            className="flex-1 sm:flex-none px-4 py-2.5 sm:px-8 sm:py-3 text-sm sm:text-base bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-bold shadow-md transition-colors cursor-pointer text-center"
           >
             Yetkiliyi Kaydet
           </button>
           <button
             type="button"
             onClick={onCancel}
-            className="px-8 py-3 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-lg font-bold transition-colors cursor-pointer"
+            className="flex-1 sm:flex-none px-4 py-2.5 sm:px-8 sm:py-3 text-sm sm:text-base bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-lg font-bold transition-colors cursor-pointer text-center"
           >
             İptal
           </button>
@@ -185,7 +185,7 @@ export default function AuthUserForm({
                 onDelete();
               }
             }}
-            className="px-8 py-3 bg-red-50 text-red-600 hover:bg-red-100 border border-red-100 rounded-lg font-bold shadow-sm transition-colors cursor-pointer"
+            className="w-full sm:w-auto px-4 py-2.5 sm:px-8 sm:py-3 text-sm sm:text-base bg-red-50 text-red-600 hover:bg-red-100 border border-red-100 rounded-lg font-bold shadow-sm transition-colors cursor-pointer text-center"
           >
             Sil
           </button>

@@ -1,6 +1,8 @@
 export default function UserSidebar({ users, selectedUser, setSelectedUser }) {
   return (
-    <div className="w-1/3 min-w-[320px] max-w-[400px] bg-white border-r border-gray-200 flex flex-col shadow-sm z-10">
+    <div
+      className={`${selectedUser ? "hidden md:flex" : "flex"} w-full md:w-1/3 md:min-w-[320px] md:max-w-[400px] bg-white border-r border-gray-200 flex-col shadow-sm z-10`}
+    >
       {/* Admin sekmesi ile aynı görsel bütünlükte sade başlık */}
       <div className="w-full py-4 text-sm font-bold text-center bg-gray-50 text-indigo-600 border-t-2 border-t-indigo-600 border-b border-gray-200">
         Kullanıcılar

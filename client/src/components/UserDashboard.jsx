@@ -47,7 +47,9 @@ export default function UserDashboard({
           selectedUser={selectedUser}
           setSelectedUser={setSelectedUser}
         />
-        <div className="flex-1 bg-slate-100/50 flex flex-col overflow-y-auto">
+        <div
+          className={`${!selectedUser ? "hidden md:flex" : "flex"} flex-1 bg-slate-100/50 flex-col overflow-y-auto w-full`}
+        >
           {!selectedUser ? (
             <div className="flex-1 flex items-center justify-center">
               <h2 className="text-4xl font-light text-gray-300">
@@ -60,6 +62,7 @@ export default function UserDashboard({
               logs={(Array.isArray(logs) ? logs : []).filter(
                 (l) => l.entityId === selectedUser?.id,
               )}
+              onBack={() => setSelectedUser(null)}
               userRole={userRole}
             />
           )}

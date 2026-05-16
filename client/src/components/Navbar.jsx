@@ -1,13 +1,13 @@
 export default function Navbar({ userName, userRole, handleLogout }) {
   return (
-    <header className="w-full bg-gradient-to-r from-indigo-900 via-indigo-800 to-violet-900 shadow-xl z-20 flex justify-between items-center px-8 py-4 relative overflow-hidden border-b border-indigo-950">
+    <header className="w-full bg-gradient-to-r from-indigo-900 via-indigo-800 to-violet-900 shadow-xl z-20 flex justify-between items-center px-4 sm:px-8 py-3 sm:py-4 relative overflow-hidden border-b border-indigo-950">
       {/* Dekoratif Arka Plan Şekilleri */}
       <div className="absolute -left-10 -top-10 w-40 h-40 bg-white opacity-5 rounded-full blur-3xl pointer-events-none"></div>
       <div className="absolute right-1/3 bottom-[-30px] w-48 h-48 bg-white opacity-[0.03] rounded-full blur-2xl pointer-events-none"></div>
       <div className="absolute right-10 top-[-20px] w-20 h-20 bg-indigo-400 opacity-20 rounded-full blur-xl pointer-events-none"></div>
 
-      <div className="flex items-center gap-5 z-10">
-        <div className="w-12 h-12 bg-white/10 backdrop-blur-md rounded-2xl flex items-center justify-center shadow-[0_0_15px_rgba(255,255,255,0.1)] border border-white/20">
+      <div className="flex items-center gap-3 sm:gap-5 z-10">
+        <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/10 backdrop-blur-md rounded-2xl flex items-center justify-center shadow-[0_0_15px_rgba(255,255,255,0.1)] border border-white/20">
           <svg
             className="w-7 h-7 text-indigo-100"
             fill="none"
@@ -23,17 +23,20 @@ export default function Navbar({ userName, userRole, handleLogout }) {
           </svg>
         </div>
         <div>
-          <h1 className="text-2xl font-black text-white tracking-wider drop-shadow-md">
-            YÖNETİM<span className="text-indigo-300 font-light">PANELİ</span>
+          <h1 className="text-xl sm:text-2xl font-black text-white tracking-wider drop-shadow-md">
+            YÖNETİM
+            <span className="text-indigo-300 font-light hidden sm:inline">
+              PANELİ
+            </span>
           </h1>
-          <p className="text-indigo-200/80 text-[11px] font-bold tracking-[0.2em] uppercase mt-0.5">
+          <p className="hidden sm:block text-indigo-200/80 text-[11px] font-bold tracking-[0.2em] uppercase mt-0.5">
             Sistem Kontrol Merkezi
           </p>
         </div>
       </div>
 
-      <div className="flex items-center gap-6 z-10">
-        <div className="text-right">
+      <div className="flex items-center gap-3 sm:gap-6 z-10">
+        <div className="hidden sm:block text-right">
           <div className="text-sm font-extrabold text-white drop-shadow-sm">
             {userName || "Kullanıcı"}
           </div>
@@ -41,12 +44,13 @@ export default function Navbar({ userName, userRole, handleLogout }) {
             {userRole === "admin" ? "Sistem Yöneticisi" : "Kullanıcı"}
           </div>
         </div>
-        <div className="h-10 w-px bg-white/10"></div>
+        <div className="hidden sm:block h-10 w-px bg-white/10"></div>
         <button
           onClick={handleLogout}
-          className="text-sm bg-white/10 hover:bg-white/20 text-white border border-white/10 hover:border-white/30 py-2.5 px-5 rounded-xl shadow-lg transition-all duration-300 cursor-pointer font-bold backdrop-blur-sm flex items-center gap-2 group"
+          className="text-xs sm:text-sm bg-white/10 hover:bg-white/20 text-white border border-white/10 hover:border-white/30 py-2 sm:py-2.5 px-3 sm:px-5 rounded-xl shadow-lg transition-all duration-300 cursor-pointer font-bold backdrop-blur-sm flex items-center gap-2 group"
         >
-          Çıkış Yap
+          <span className="hidden sm:inline">Çıkış Yap</span>
+          <span className="sm:hidden">Çıkış</span>
           <svg
             className="w-4 h-4 text-indigo-200 group-hover:translate-x-1 transition-transform"
             fill="none"
