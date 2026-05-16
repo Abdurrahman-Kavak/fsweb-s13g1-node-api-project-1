@@ -8,6 +8,7 @@ server.use(express.json());
 server.use(cors());
 
 const authUsers = require("./users/users");
+const logs = require("./logs/logs");
 
 // Giriş Yapma Uç Noktası / Login Endpoint
 server.post("/api/login", (req, res) => {
@@ -41,13 +42,31 @@ const protect = (req, res, next) => {
 server.use("/api/users", protect); // Tüm /api/users isteklerini koru / Protect all /api/users routes
 server.use("/api/auth-users", protect); // Auth user isteklerini de koru
 
+// LOGS (İşlem Geçmişi) İŞLEMLERİ
+server.get("/api/logs", protect, (req, res) => {
+  res.json(logs);
+});
+
+server.post("/api/logs", protect, (req, res) => {
+  const { entityId, action, by } = req.body;
+  const newLog = {
+    id: Date.now().toString(),
+    entityId,
+    action,
+    by,
+    date: new Date().toLocaleString(),
+  };
+  logs.unshift(newLog); // En yeni işlem en başa eklenir
+  res.status(201).json(newLog);
+});
+
 // AUTH USERS (Giriş Yapan Kullanıcılar) CRUD İŞLEMLERİ
 server.get("/api/auth-users", (req, res) => {
   res.json(authUsers);
 });
 
 server.post("/api/auth-users", (req, res) => {
-  const { name, email, password, role } = req.body;
+  const { name, email, password, role, avatar } = req.body;
   if (!name || !email || !password || !role) {
     return res.status(400).json({ message: "Lütfen tüm alanları doldurun" });
   }
@@ -57,16 +76,24 @@ server.post("/api/auth-users", (req, res) => {
     email,
     password,
     role,
+    avatar,
   };
   authUsers.push(newUser);
   res.status(201).json(newUser);
 });
 
 server.put("/api/auth-users/:id", (req, res) => {
-  const { name, email, password, role } = req.body;
+  const { name, email, password, role, avatar } = req.body;
   const index = authUsers.findIndex((u) => u.id === req.params.id);
   if (index !== -1) {
-    authUsers[index] = { id: req.params.id, name, email, password, role };
+    authUsers[index] = {
+      id: req.params.id,
+      name,
+      email,
+      password,
+      role,
+      avatar,
+    };
     res.json(authUsers[index]);
   } else {
     res.status(404).json({ message: "Kullanıcı bulunamadı" });
@@ -112,7 +139,7 @@ server.get("/api/users/:id", async (req, res) => {
   }
 });
 server.post("/api/users", async (req, res) => {
-  const { name, bio } = req.body;
+  const { name, bio, avatar } = req.body;
   if (!name || !bio) {
     return res
       .status(400)
@@ -120,7 +147,17 @@ server.post("/api/users", async (req, res) => {
   } else {
     try {
       const newUser = await User.insert({ name, bio });
-      res.status(201).json(newUser);
+      if (avatar) {
+        const updatedUser = await User.update(newUser.id, {
+          id: newUser.id,
+          name,
+          bio,
+          avatar,
+        });
+        res.status(201).json(updatedUser);
+      } else {
+        res.status(201).json(newUser);
+      }
     } catch (err) {
       res
         .status(500)
@@ -147,14 +184,14 @@ server.delete("/api/users/:id", async (req, res) => {
 
 server.put("/api/users/:id", async (req, res) => {
   const { id } = req.params;
-  const { name, bio } = req.body;
+  const { name, bio, avatar } = req.body;
   if (!name || !bio) {
     return res
       .status(400)
       .json({ message: "Lütfen kullanıcı için name ve bio sağlayın" });
   } else {
     try {
-      const updatedUser = await User.update(id, { id, name, bio }); // id en başa eklendi / id added to the top
+      const updatedUser = await User.update(id, { id, name, bio, avatar }); // id en başa eklendi / id added to the top
       if (updatedUser) {
         res.json(updatedUser);
       } else {

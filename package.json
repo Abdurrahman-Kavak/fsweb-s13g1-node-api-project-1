@@ -8,7 +8,8 @@
     "test": "cross-env NODE_ENV=testing jest --verbose --runInBand",
     "resetdb": "knex migrate:rollback && knex migrate:latest && knex seed:run",
     "sendresults": "node sendTestResults.js",
-    "server": "nodemon index.js"
+    "server": "nodemon index.js",
+    "client": "npm run dev --prefix client"
   },
   "devDependencies": {
     "@types/jest": "^27.5.0",

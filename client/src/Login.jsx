@@ -155,12 +155,17 @@ export default function Login({ onLogin }) {
           </Form>
           <p className="text-sm text-gray-500 text-center mt-5 leading-relaxed">
             <span className="font-semibold text-gray-700">Tam Yetki:</span>{" "}
+            <br />
             admin@example.com
             <br />
+            admin2@example.com
+            <br />
             <span className="font-semibold text-gray-700">Sadece Okuma: </span>
+            <br />
             user@example.com
             <br />
-            <span className="font-semibold text-gray-700">Şifreler:</span>{" "}
+            <span className="font-semibold text-gray-700">Şifreler:</span>
+            <br />
             password123
           </p>
         </CardBody>

@@ -51,25 +51,6 @@ export default function AdminSidebar({
 
       {/* İçerik Alanı */}
       <div className="flex-1 bg-gray-50 flex flex-col overflow-hidden">
-        <div className="p-5 border-b border-gray-200 flex flex-col gap-4">
-          <button
-            onClick={() => {
-              if (activeTab === "users") {
-                setIsAdding(true);
-                setIsAddingAuth(false);
-              } else {
-                setIsAddingAuth(true);
-                setIsAdding(false);
-              }
-              setSelectedUser(null);
-            }}
-            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-3 rounded-lg shadow-sm text-sm font-semibold transition-colors cursor-pointer text-center"
-          >
-            {activeTab === "users"
-              ? "+ Yeni Kullanıcı Ekle"
-              : "+ Yeni Yetkili Ekle"}
-          </button>
-        </div>
         <div className="flex-1 overflow-y-auto p-4 space-y-4">
           {displayUsers.map((user) => (
             <div
@@ -112,6 +93,23 @@ export default function AdminSidebar({
             </p>
           )}
         </div>
+        <button
+          onClick={() => {
+            if (activeTab === "users") {
+              setIsAdding(true);
+              setIsAddingAuth(false);
+            } else {
+              setIsAddingAuth(true);
+              setIsAdding(false);
+            }
+            setSelectedUser(null);
+          }}
+          className="w-full py-[15px] text-sm font-bold text-center transition-colors cursor-pointer bg-gray-50 text-indigo-600 border-b-2 border-b-indigo-600 border-t-2 border-t-transparent hover:bg-gray-100"
+        >
+          {activeTab === "users"
+            ? "+ Yeni Kullanıcı Ekle"
+            : "+ Yeni Yetkili Ekle"}
+        </button>
       </div>
     </div>
   );

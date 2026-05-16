@@ -13,10 +13,19 @@ export default function UserDashboard({
 }) {
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [logs, setLogs] = useState([]);
 
   useEffect(() => {
     fetchUsers();
+    fetchLogs();
   }, []);
+
+  const fetchLogs = async () => {
+    const res = await fetch("http://localhost:9000/api/logs", {
+      headers: { Authorization: token },
+    });
+    if (res.ok) setLogs(await res.json());
+  };
 
   const fetchUsers = async () => {
     const res = await fetch(API_URL, { headers: { Authorization: token } });
@@ -46,7 +55,13 @@ export default function UserDashboard({
               </h2>
             </div>
           ) : (
-            <UserDetail user={selectedUser} />
+            <UserDetail
+              user={selectedUser}
+              logs={(Array.isArray(logs) ? logs : []).filter(
+                (l) => l.entityId === selectedUser?.id,
+              )}
+              userRole={userRole}
+            />
           )}
         </div>
       </div>

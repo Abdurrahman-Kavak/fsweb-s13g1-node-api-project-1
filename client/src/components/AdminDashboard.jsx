@@ -20,10 +20,32 @@ export default function AdminDashboard({
   const [isAdding, setIsAdding] = useState(false);
   const [isAddingAuth, setIsAddingAuth] = useState(false);
 
+  const [logs, setLogs] = useState([]);
+
+  const addLog = async (entityId, action) => {
+    const res = await fetch("http://localhost:9000/api/logs", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: token },
+      body: JSON.stringify({ entityId, action, by: userName }),
+    });
+    if (res.ok) {
+      const newLog = await res.json();
+      setLogs((prev) => [newLog, ...(Array.isArray(prev) ? prev : [])]);
+    }
+  };
+
   useEffect(() => {
     fetchUsers();
     fetchAuthUsers();
+    fetchLogs();
   }, []);
+
+  const fetchLogs = async () => {
+    const res = await fetch("http://localhost:9000/api/logs", {
+      headers: { Authorization: token },
+    });
+    if (res.ok) setLogs(await res.json());
+  };
 
   const fetchUsers = async () => {
     const res = await fetch(API_URL, { headers: { Authorization: token } });
@@ -53,6 +75,7 @@ export default function AdminDashboard({
       setUsers(users.map((u) => (u.id === selectedUser.id ? updatedUser : u)));
       setSelectedUser(updatedUser);
       toast.success("Kullanıcı başarıyla güncellendi!");
+      addLog(updatedUser.id, "Kullanıcı bilgileri güncellendi.");
     } else {
       const res = await fetch(API_URL, {
         method: "POST",
@@ -64,6 +87,7 @@ export default function AdminDashboard({
       setIsAdding(false);
       setSelectedUser(newUser);
       toast.success("Yeni kullanıcı başarıyla eklendi!");
+      addLog(newUser.id, "Yeni kullanıcı oluşturuldu.");
     }
   };
 
@@ -81,6 +105,7 @@ export default function AdminDashboard({
         );
         setSelectedUser(updatedUser);
         toast.success("Sistem yetkilisi güncellendi!");
+        addLog(updatedUser.id, "Sistem yetkilisi güncellendi.");
       }
     } else {
       const res = await fetch(AUTH_API_URL, {
@@ -94,6 +119,7 @@ export default function AdminDashboard({
         setIsAddingAuth(false);
         setSelectedUser(newUser);
         toast.success("Sistem yetkilisi başarıyla eklendi!");
+        addLog(newUser.id, "Yeni sistem yetkilisi oluşturuldu.");
       } else {
         toast.error("Sistem yetkilisi eklenirken bir hata oluştu.");
       }
@@ -108,6 +134,7 @@ export default function AdminDashboard({
     setUsers(users.filter((u) => u.id !== id));
     if (selectedUser?.id === id) setSelectedUser(null);
     toast.info("Kullanıcı silindi.");
+    addLog(id, "Kullanıcı silindi.");
   };
 
   const handleAuthDelete = async (id) => {
@@ -118,6 +145,7 @@ export default function AdminDashboard({
     setAuthUsers(authUsers.filter((u) => u.id !== id));
     if (selectedUser?.id === id) setSelectedUser(null);
     toast.info("Sistem yetkilisi silindi.");
+    addLog(id, "Sistem yetkilisi silindi.");
   };
 
   return (
@@ -149,6 +177,10 @@ export default function AdminDashboard({
             <AuthUserForm
               user={selectedUser && selectedUser.email ? selectedUser : null}
               onSubmit={handleAuthSubmit}
+              logs={(Array.isArray(logs) ? logs : []).filter(
+                (l) => l.entityId === selectedUser?.id,
+              )}
+              userRole={userRole}
               onCancel={() => {
                 setIsAddingAuth(false);
                 setSelectedUser(null);
@@ -158,6 +190,10 @@ export default function AdminDashboard({
             <UserForm
               user={selectedUser}
               onSubmit={handleSubmit}
+              logs={(Array.isArray(logs) ? logs : []).filter(
+                (l) => l.entityId === selectedUser?.id,
+              )}
+              userRole={userRole}
               onCancel={() => {
                 setIsAdding(false);
                 setSelectedUser(null);
