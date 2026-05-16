@@ -1,7 +1,7 @@
 export default function Navbar({ userName, userRole, handleLogout }) {
   return (
     <header className="w-full bg-white border-b border-gray-200 shadow-sm z-20 flex justify-between items-center px-6 py-4">
-      <div className="text-2xl font-black text-blue-600 tracking-wide">
+      <div className="text-2xl font-black text-indigo-600 tracking-wide">
         Yönetim Paneli
       </div>
       <div className="flex items-center gap-6">
@@ -15,7 +15,7 @@ export default function Navbar({ userName, userRole, handleLogout }) {
         </div>
         <button
           onClick={handleLogout}
-          className="text-sm bg-red-100 hover:bg-red-200 text-red-600 py-2 px-4 rounded-lg shadow-sm transition cursor-pointer font-bold"
+          className="text-sm bg-red-50 hover:bg-red-100 text-red-600 py-2 px-4 rounded-lg shadow-sm transition-colors cursor-pointer font-bold"
         >
           Çıkış Yap
         </button>

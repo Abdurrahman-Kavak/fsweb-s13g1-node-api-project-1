@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 export default function Login({ onLogin }) {
   const [email, setEmail] = useState("");
@@ -18,11 +19,14 @@ export default function Login({ onLogin }) {
       const data = await res.json();
 
       if (res.ok) {
+        toast.success("Giriş başarılı! Hoşgeldiniz.");
         onLogin(data.token, data.name, data.role);
       } else {
+        toast.error(data.message || "Giriş başarısız.");
         setError(data.message);
       }
     } catch (err) {
+      toast.error("Sunucuya bağlanılamadı.");
       setError("Sunucuya bağlanılamadı.");
     }
   };
@@ -47,7 +51,7 @@ export default function Login({ onLogin }) {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              className="w-full p-3 border border-gray-300 rounded focus:ring-2 focus:ring-indigo-500 focus:outline-none bg-gray-50 text-gray-900 placeholder-gray-400 transition-colors"
               placeholder="admin@example.com"
               required
             />
@@ -60,14 +64,14 @@ export default function Login({ onLogin }) {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              className="w-full p-3 border border-gray-300 rounded focus:ring-2 focus:ring-indigo-500 focus:outline-none bg-gray-50 text-gray-900 placeholder-gray-400 transition-colors"
               placeholder="••••••••"
               required
             />
           </div>
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white font-bold py-3 rounded hover:bg-blue-700 transition-colors mt-2 cursor-pointer"
+            className="w-full bg-indigo-600 text-white font-bold py-3 rounded hover:bg-indigo-700 mt-2 cursor-pointer transition-colors"
           >
             Giriş Yap
           </button>
