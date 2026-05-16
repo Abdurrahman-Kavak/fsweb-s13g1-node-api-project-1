@@ -35,7 +35,7 @@ export default function UserDashboard({
   };
 
   return (
-    <div className="flex flex-col h-screen bg-gray-100 font-sans">
+    <div className="flex flex-col h-screen bg-slate-50 font-sans">
       <Navbar
         userName={userName}
         userRole={userRole}
@@ -47,7 +47,7 @@ export default function UserDashboard({
           selectedUser={selectedUser}
           setSelectedUser={setSelectedUser}
         />
-        <div className="flex-1 bg-gray-50 flex flex-col overflow-y-auto">
+        <div className="flex-1 bg-slate-100/50 flex flex-col overflow-y-auto">
           {!selectedUser ? (
             <div className="flex-1 flex items-center justify-center">
               <h2 className="text-4xl font-light text-gray-300">

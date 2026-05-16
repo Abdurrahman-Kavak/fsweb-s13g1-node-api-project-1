@@ -149,7 +149,7 @@ export default function AdminDashboard({
   };
 
   return (
-    <div className="flex flex-col h-screen bg-gray-100 font-sans">
+    <div className="flex flex-col h-screen bg-slate-50 font-sans">
       <Navbar
         userName={userName}
         userRole={userRole}
@@ -166,7 +166,7 @@ export default function AdminDashboard({
           handleDelete={handleDelete}
           handleAuthDelete={handleAuthDelete}
         />
-        <div className="flex-1 bg-gray-50 flex flex-col overflow-y-auto">
+        <div className="flex-1 bg-slate-100/50 flex flex-col overflow-y-auto">
           {!isAdding && !isAddingAuth && !selectedUser ? (
             <div className="flex-1 flex items-center justify-center">
               <h2 className="text-4xl font-light text-gray-300">
@@ -185,6 +185,7 @@ export default function AdminDashboard({
                 setIsAddingAuth(false);
                 setSelectedUser(null);
               }}
+              onDelete={() => handleAuthDelete(selectedUser.id)}
             />
           ) : (
             <UserForm
@@ -198,6 +199,7 @@ export default function AdminDashboard({
                 setIsAdding(false);
                 setSelectedUser(null);
               }}
+              onDelete={() => handleDelete(selectedUser.id)}
             />
           )}
         </div>

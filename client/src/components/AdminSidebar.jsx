@@ -66,24 +66,23 @@ export default function AdminSidebar({
                 setIsAddingAuth(false);
               }}
             >
-              <h3 className="text-lg font-semibold text-gray-800">
-                {user.name}
-              </h3>
-              <p className="text-gray-500 text-sm mt-1 line-clamp-2">
-                {activeTab === "users" ? user.bio : user.email}
-              </p>
-              <div className="flex justify-end mt-4">
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    activeTab === "users"
-                      ? handleDelete(user.id)
-                      : handleAuthDelete(user.id);
-                  }}
-                  className="px-3 py-1.5 bg-red-50 text-red-600 hover:bg-red-100 rounded-md text-sm font-medium transition-colors cursor-pointer"
-                >
-                  Sil
-                </button>
+              <div className="flex items-center gap-4">
+                <img
+                  src={
+                    user.avatar ||
+                    `https://ui-avatars.com/api/?name=${user.name}&background=${activeTab === "users" ? "f3f4f6" : "e0e7ff"}&color=${activeTab === "users" ? "374151" : "4f46e5"}`
+                  }
+                  alt={user.name}
+                  className="w-12 h-12 rounded-full object-cover border-2 border-white shadow-sm shrink-0"
+                />
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-bold text-gray-800 truncate">
+                    {user.name}
+                  </p>
+                  <p className="text-xs text-gray-500 truncate">
+                    {activeTab === "users" ? user.bio : user.email}
+                  </p>
+                </div>
               </div>
             </div>
           ))}
