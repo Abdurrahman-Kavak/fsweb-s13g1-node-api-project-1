@@ -4,6 +4,7 @@ const User = require("./users/model");
 const server = express();
 
 server.use(express.json());
+server.use(cors());
 
 server.get("/", (req, res) => {
   res.send("API'ye hoş geldiniz!");
