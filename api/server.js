@@ -16,7 +16,12 @@ server.post("/api/login", (req, res) => {
     (u) => u.email === email && u.password === password,
   );
   if (user) {
-    res.json({ token: "admin-token-123", message: "Giriş başarılı" });
+    res.json({
+      token: "admin-token-123",
+      message: "Giriş başarılı",
+      name: user.name,
+      role: user.role,
+    });
   } else {
     res.status(401).json({ message: "Geçersiz e-posta veya şifre" });
   }

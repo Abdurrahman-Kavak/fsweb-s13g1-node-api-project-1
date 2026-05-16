@@ -10,6 +10,8 @@ function App() {
   const [editingId, setEditingId] = useState(null);
   const [isAdding, setIsAdding] = useState(false);
   const [token, setToken] = useState(localStorage.getItem("token"));
+  const [userName, setUserName] = useState(localStorage.getItem("userName"));
+  const [userRole, setUserRole] = useState(localStorage.getItem("userRole"));
 
   useEffect(() => {
     if (token) fetchUsers();
@@ -17,7 +19,11 @@ function App() {
 
   const handleLogout = () => {
     setToken(null);
+    setUserName(null);
+    setUserRole(null);
     localStorage.removeItem("token");
+    localStorage.removeItem("userName");
+    localStorage.removeItem("userRole");
   };
 
   const fetchUsers = async () => {
@@ -84,139 +90,165 @@ function App() {
   if (!token) {
     return (
       <Login
-        setToken={(t) => {
+        onLogin={(t, name, role) => {
           setToken(t);
+          setUserName(name);
+          setUserRole(role);
           localStorage.setItem("token", t);
+          localStorage.setItem("userName", name);
+          localStorage.setItem("userRole", role);
         }}
       />
     );
   }
 
   return (
-    <div className="flex h-screen bg-gray-100 font-sans">
-      <div className="w-1/3 min-w-[320px] max-w-[400px] bg-white border-r border-gray-200 flex flex-col shadow-sm z-10">
-        <div className="p-5 border-b border-gray-200 flex flex-col gap-4 bg-gray-50">
-          <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold text-gray-800">Kullanıcılar</h1>
-            <button
-              onClick={handleLogout}
-              className="text-sm bg-red-100 hover:bg-red-200 text-red-600 py-1 px-3 rounded shadow-sm transition cursor-pointer"
-            >
-              Çıkış Yap
-            </button>
+    <div className="flex flex-col h-screen bg-gray-100 font-sans">
+      {/* ÜST MENÜ / TOP NAVBAR */}
+      <header className="w-full bg-white border-b border-gray-200 shadow-sm z-20 flex justify-between items-center px-6 py-4">
+        <div className="text-2xl font-black text-blue-600 tracking-wide">
+          Yönetim Paneli
+        </div>
+        <div className="flex items-center gap-6">
+          <div className="text-right">
+            <div className="text-sm font-bold text-gray-800">
+              {userName || "Kullanıcı"}
+            </div>
+            <div className="text-xs text-gray-500 uppercase tracking-wider font-semibold">
+              {userRole || "Admin"}
+            </div>
           </div>
           <button
-            onClick={() => {
-              setIsAdding(true);
-              setEditingId(null);
-              setFormData({ name: "", bio: "" });
-            }}
-            className="w-full bg-green-600 hover:bg-green-700 text-white px-4 py-3 rounded-lg shadow-sm text-sm font-semibold transition-colors cursor-pointer text-center"
+            onClick={handleLogout}
+            className="text-sm bg-red-100 hover:bg-red-200 text-red-600 py-2 px-4 rounded-lg shadow-sm transition cursor-pointer font-bold"
           >
-            + Yeni Kullanıcı Ekle
+            Çıkış Yap
           </button>
         </div>
+      </header>
 
-        <div className="flex-1 overflow-y-auto p-4 space-y-4">
-          {users.map((user) => (
-            <div
-              key={user.id}
-              className={`border p-4 rounded-xl shadow-sm transition-all cursor-pointer ${
-                editingId === user.id
-                  ? "border-blue-500 ring-1 ring-blue-500 bg-blue-50"
-                  : "border-gray-200 hover:border-gray-300 bg-white"
-              }`}
-              onClick={() => handleEdit(user)}
+      {/* ANA İÇERİK / MAIN CONTENT */}
+      <div className="flex flex-1 overflow-hidden">
+        {/* SOL TARAF: Kullanıcı Listesi ve Ekle Butonu */}
+        <div className="w-1/3 min-w-[320px] max-w-[400px] bg-white border-r border-gray-200 flex flex-col shadow-sm z-10">
+          <div className="p-5 border-b border-gray-200 flex flex-col gap-4 bg-gray-50">
+            <h1 className="text-2xl font-bold text-gray-800">Kullanıcılar</h1>
+            <button
+              onClick={() => {
+                setIsAdding(true);
+                setEditingId(null);
+                setFormData({ name: "", bio: "" });
+              }}
+              className="w-full bg-green-600 hover:bg-green-700 text-white px-4 py-3 rounded-lg shadow-sm text-sm font-semibold transition-colors cursor-pointer text-center"
             >
-              <h3 className="text-lg font-semibold text-gray-800">
-                {user.name}
-              </h3>
-              <p
-                className="text-gray-500 text-sm mt-1 line-clamp-2"
-                title={user.bio}
+              + Yeni Kullanıcı Ekle
+            </button>
+          </div>
+
+          <div className="flex-1 overflow-y-auto p-4 space-y-4">
+            {users.map((user) => (
+              <div
+                key={user.id}
+                className={`border p-4 rounded-xl shadow-sm transition-all cursor-pointer ${
+                  editingId === user.id
+                    ? "border-blue-500 ring-1 ring-blue-500 bg-blue-50"
+                    : "border-gray-200 hover:border-gray-300 bg-white"
+                }`}
+                onClick={() => handleEdit(user)}
               >
-                {user.bio}
-              </p>
-              <div className="flex justify-end gap-2 mt-4">
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleDelete(user.id);
-                  }}
-                  className="px-3 py-1.5 bg-red-100 text-red-700 hover:bg-red-200 rounded-md text-sm font-medium transition-colors cursor-pointer"
+                <h3 className="text-lg font-semibold text-gray-800">
+                  {user.name}
+                </h3>
+                <p
+                  className="text-gray-500 text-sm mt-1 line-clamp-2"
+                  title={user.bio}
                 >
-                  Sil
-                </button>
+                  {user.bio}
+                </p>
+                <div className="flex justify-end gap-2 mt-4">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDelete(user.id);
+                    }}
+                    className="px-3 py-1.5 bg-red-100 text-red-700 hover:bg-red-200 rounded-md text-sm font-medium transition-colors cursor-pointer"
+                  >
+                    Sil
+                  </button>
+                </div>
               </div>
+            ))}
+            {users.length === 0 && (
+              <p className="text-center text-gray-500 mt-10">
+                Hiç kullanıcı yok.
+              </p>
+            )}
+          </div>
+        </div>
+
+        {/* SAĞ TARAF: Form veya Hoşgeldiniz Mesajı */}
+        <div className="flex-1 bg-gray-50 flex flex-col overflow-y-auto">
+          {!isAdding && !editingId ? (
+            <div className="flex-1 flex items-center justify-center">
+              <h2 className="text-4xl font-light text-gray-300">
+                Hoşgeldiniz, {userName || "Kullanıcı"}
+              </h2>
             </div>
-          ))}
-          {users.length === 0 && (
-            <p className="text-center text-gray-500 mt-10">
-              Hiç kullanıcı yok.
-            </p>
+          ) : (
+            <div className="flex-1 p-10 flex flex-col max-w-2xl mx-auto w-full mt-10">
+              <h2 className="text-3xl font-bold text-gray-800 mb-8 pb-4 border-b border-gray-200">
+                {editingId ? "Kullanıcıyı Düzenle" : "Yeni Kullanıcı Ekle"}
+              </h2>
+              <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+                <div className="flex flex-col gap-2">
+                  <label className="text-sm font-semibold text-gray-700">
+                    İsim
+                  </label>
+                  <input
+                    type="text"
+                    name="name"
+                    placeholder="Örn: Ahmet Yılmaz"
+                    value={formData.name}
+                    onChange={handleChange}
+                    className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 shadow-sm"
+                  />
+                </div>
+                <div className="flex flex-col gap-2">
+                  <label className="text-sm font-semibold text-gray-700">
+                    Biyografi
+                  </label>
+                  <textarea
+                    name="bio"
+                    rows="6"
+                    placeholder="Kullanıcı hakkında bir şeyler yazın..."
+                    value={formData.bio}
+                    onChange={handleChange}
+                    className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 shadow-sm resize-none"
+                  />
+                </div>
+                <div className="flex gap-4 mt-4">
+                  <button
+                    type="submit"
+                    className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium shadow-md transition-colors cursor-pointer"
+                  >
+                    {editingId ? "Değişiklikleri Kaydet" : "Kullanıcıyı Kaydet"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsAdding(false);
+                      setEditingId(null);
+                      setFormData({ name: "", bio: "" });
+                    }}
+                    className="px-6 py-3 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-lg font-medium transition-colors cursor-pointer"
+                  >
+                    İptal
+                  </button>
+                </div>
+              </form>
+            </div>
           )}
         </div>
-      </div>
-
-      <div className="flex-1 bg-gray-50 flex flex-col">
-        {!isAdding && !editingId ? (
-          <div className="flex-1 flex items-center justify-center">
-            <h2 className="text-4xl font-light text-gray-300">Hoşgeldiniz</h2>
-          </div>
-        ) : (
-          <div className="flex-1 p-10 flex flex-col max-w-2xl mx-auto w-full mt-10">
-            <h2 className="text-3xl font-bold text-gray-800 mb-8 pb-4 border-b border-gray-200">
-              {editingId ? "Kullanıcıyı Düzenle" : "Yeni Kullanıcı Ekle"}
-            </h2>
-            <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-              <div className="flex flex-col gap-2">
-                <label className="text-sm font-semibold text-gray-700">
-                  İsim
-                </label>
-                <input
-                  type="text"
-                  name="name"
-                  placeholder="Örn: Ahmet Yılmaz"
-                  value={formData.name}
-                  onChange={handleChange}
-                  className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 shadow-sm"
-                />
-              </div>
-              <div className="flex flex-col gap-2">
-                <label className="text-sm font-semibold text-gray-700">
-                  Biyografi
-                </label>
-                <textarea
-                  name="bio"
-                  rows="6"
-                  placeholder="Kullanıcı hakkında bir şeyler yazın..."
-                  value={formData.bio}
-                  onChange={handleChange}
-                  className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 shadow-sm resize-none"
-                />
-              </div>
-              <div className="flex gap-4 mt-4">
-                <button
-                  type="submit"
-                  className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium shadow-md transition-colors cursor-pointer"
-                >
-                  {editingId ? "Değişiklikleri Kaydet" : "Kullanıcıyı Kaydet"}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setIsAdding(false);
-                    setEditingId(null);
-                    setFormData({ name: "", bio: "" });
-                  }}
-                  className="px-6 py-3 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-lg font-medium transition-colors cursor-pointer"
-                >
-                  İptal
-                </button>
-              </div>
-            </form>
-          </div>
-        )}
       </div>
     </div>
   );

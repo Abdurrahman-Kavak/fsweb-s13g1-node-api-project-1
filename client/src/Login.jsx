@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function Login({ setToken }) {
+export default function Login({ onLogin }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -18,7 +18,7 @@ export default function Login({ setToken }) {
       const data = await res.json();
 
       if (res.ok) {
-        setToken(data.token);
+        onLogin(data.token, data.name, data.role);
       } else {
         setError(data.message);
       }
