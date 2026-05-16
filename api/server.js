@@ -1,4 +1,4 @@
-// SUNUCUYU BU DOSYAYA KURUN
+// SUNUCUYU BU DOSYAYA KURUN / SETUP THE SERVER IN THIS FILE
 const express = require("express");
 const User = require("./users/model");
 const cors = require("cors");
@@ -78,7 +78,7 @@ server.put("/api/users/:id", async (req, res) => {
       .json({ message: "Lütfen kullanıcı için name ve bio sağlayın" });
   } else {
     try {
-      const updatedUser = await User.update(id, { id, name, bio }); // id en başa eklendi
+      const updatedUser = await User.update(id, { id, name, bio }); // id en başa eklendi / id added to the top
       if (updatedUser) {
         res.json(updatedUser);
       } else {
@@ -92,4 +92,4 @@ server.put("/api/users/:id", async (req, res) => {
   }
 });
 
-module.exports = server; // SERVERINIZI EXPORT EDİN {}
+module.exports = server; // SERVERINIZI EXPORT EDİN {} / EXPORT YOUR SERVER {}
