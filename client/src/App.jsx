@@ -61,16 +61,19 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <h1>Kullanıcı Yönetimi</h1>
+    <div className="max-w-2xl mx-auto p-5 font-sans">
+      <h1 className="text-center text-gray-800 text-3xl font-bold mb-8">
+        Kullanıcı Yönetimi
+      </h1>
 
-      <form onSubmit={handleSubmit} className="user-form">
+      <form onSubmit={handleSubmit} className="flex gap-2 mb-8">
         <input
           type="text"
           name="name"
           placeholder="İsim"
           value={formData.name}
           onChange={handleChange}
+          className="flex-1 p-2.5 border border-gray-300 rounded focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
         />
         <input
           type="text"
@@ -78,12 +81,18 @@ function App() {
           placeholder="Biyografi"
           value={formData.bio}
           onChange={handleChange}
+          className="flex-1 p-2.5 border border-gray-300 rounded focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
         />
-        <button type="submit">{editingId ? "Güncelle" : "Ekle"}</button>
+        <button
+          type="submit"
+          className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded transition-colors cursor-pointer"
+        >
+          {editingId ? "Güncelle" : "Ekle"}
+        </button>
         {editingId && (
           <button
             type="button"
-            className="cancel-btn"
+            className="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded transition-colors cursor-pointer"
             onClick={() => {
               setEditingId(null);
               setFormData({ name: "", bio: "" });
@@ -94,15 +103,25 @@ function App() {
         )}
       </form>
 
-      <div className="user-list">
+      <div className="flex flex-col gap-4">
         {users.map((user) => (
-          <div key={user.id} className="user-card">
-            <h3>{user.name}</h3>
-            <p>{user.bio}</p>
-            <div className="actions">
-              <button onClick={() => handleEdit(user)}>Düzenle</button>
+          <div
+            key={user.id}
+            className="border border-gray-200 p-4 rounded-lg bg-gray-50 shadow-sm"
+          >
+            <h3 className="mt-0 mb-1 text-xl font-semibold text-gray-800">
+              {user.name}
+            </h3>
+            <p className="text-gray-600">{user.bio}</p>
+            <div className="flex gap-2 mt-4">
               <button
-                className="delete-btn"
+                onClick={() => handleEdit(user)}
+                className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded transition-colors cursor-pointer"
+              >
+                Düzenle
+              </button>
+              <button
+                className="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white text-sm rounded transition-colors cursor-pointer"
                 onClick={() => handleDelete(user.id)}
               >
                 Sil
