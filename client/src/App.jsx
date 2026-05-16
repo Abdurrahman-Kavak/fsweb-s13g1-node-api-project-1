@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Login from "./Login";
 import "./App.css";
 
 const API_URL = "http://localhost:9000/api/users";
@@ -8,13 +9,22 @@ function App() {
   const [formData, setFormData] = useState({ name: "", bio: "" });
   const [editingId, setEditingId] = useState(null);
   const [isAdding, setIsAdding] = useState(false);
+  const [token, setToken] = useState(localStorage.getItem("token"));
 
   useEffect(() => {
-    fetchUsers();
-  }, []);
+    if (token) fetchUsers();
+  }, [token]);
+
+  const handleLogout = () => {
+    setToken(null);
+    localStorage.removeItem("token");
+  };
 
   const fetchUsers = async () => {
-    const res = await fetch(API_URL);
+    const res = await fetch(API_URL, {
+      headers: { Authorization: token },
+    });
+    if (res.status === 403) return handleLogout();
     const data = await res.json();
     setUsers(data);
   };
@@ -32,7 +42,7 @@ function App() {
       // Kullanıcı Güncelle (PUT) / Update User (PUT)
       const res = await fetch(`${API_URL}/${editingId}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", Authorization: token },
         body: JSON.stringify(formData),
       });
       const updatedUser = await res.json();
@@ -43,7 +53,7 @@ function App() {
       // Kullanıcı Ekle (POST) / Add User (POST)
       const res = await fetch(API_URL, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", Authorization: token },
         body: JSON.stringify(formData),
       });
       const newUser = await res.json();
@@ -54,7 +64,10 @@ function App() {
   };
 
   const handleDelete = async (id) => {
-    await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+    await fetch(`${API_URL}/${id}`, {
+      method: "DELETE",
+      headers: { Authorization: token },
+    });
     setUsers(users.filter((u) => u.id !== id));
     if (editingId === id) {
       setEditingId(null);
@@ -68,11 +81,30 @@ function App() {
     setIsAdding(false);
   };
 
+  if (!token) {
+    return (
+      <Login
+        setToken={(t) => {
+          setToken(t);
+          localStorage.setItem("token", t);
+        }}
+      />
+    );
+  }
+
   return (
     <div className="flex h-screen bg-gray-100 font-sans">
       <div className="w-1/3 min-w-[320px] max-w-[400px] bg-white border-r border-gray-200 flex flex-col shadow-sm z-10">
         <div className="p-5 border-b border-gray-200 flex flex-col gap-4 bg-gray-50">
-          <h1 className="text-2xl font-bold text-gray-800">Kullanıcılar</h1>
+          <div className="flex justify-between items-center">
+            <h1 className="text-2xl font-bold text-gray-800">Kullanıcılar</h1>
+            <button
+              onClick={handleLogout}
+              className="text-sm bg-red-100 hover:bg-red-200 text-red-600 py-1 px-3 rounded shadow-sm transition cursor-pointer"
+            >
+              Çıkış Yap
+            </button>
+          </div>
           <button
             onClick={() => {
               setIsAdding(true);

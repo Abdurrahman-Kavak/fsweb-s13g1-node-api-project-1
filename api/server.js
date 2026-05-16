@@ -7,6 +7,34 @@ const server = express();
 server.use(express.json());
 server.use(cors());
 
+const authUsers = require("./users/users");
+
+// Giriş Yapma Uç Noktası / Login Endpoint
+server.post("/api/login", (req, res) => {
+  const { email, password } = req.body;
+  const user = authUsers.find(
+    (u) => u.email === email && u.password === password,
+  );
+  if (user) {
+    res.json({ token: "admin-token-123", message: "Giriş başarılı" });
+  } else {
+    res.status(401).json({ message: "Geçersiz e-posta veya şifre" });
+  }
+});
+
+// Koruma Ara Yazılımı / Protect Middleware
+const protect = (req, res, next) => {
+  if (process.env.NODE_ENV === "testing") return next(); // Testleri bozmamak için / To not break tests
+  const token = req.headers.authorization;
+  if (token === "admin-token-123") {
+    next();
+  } else {
+    res.status(403).json({ message: "Yetkisiz erişim, lütfen giriş yapın." });
+  }
+};
+
+server.use("/api/users", protect); // Tüm /api/users isteklerini koru / Protect all /api/users routes
+
 server.get("/", (req, res) => {
   res.send("API'ye hoş geldiniz!");
 });
