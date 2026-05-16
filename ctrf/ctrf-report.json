@@ -10,13 +10,13 @@
       "pending": 0,
       "skipped": 0,
       "other": 0,
-      "start": 1778938852880,
-      "stop": 1778938853636
+      "start": 1778950340405,
+      "stop": 1778950341145
     },
     "tests": [
       {
         "name": "[0] sanity check",
-        "duration": 1,
+        "duration": 2,
         "status": "passed",
         "rawStatus": "passed",
         "type": "unit",
@@ -27,7 +27,7 @@
       },
       {
         "name": "server.js kullanıcı uçnoktası [POST] /api/users [1] yeni kullanıcıyla cevap veriyor",
-        "duration": 22,
+        "duration": 28,
         "status": "passed",
         "rawStatus": "passed",
         "type": "unit",
@@ -71,7 +71,7 @@
       },
       {
         "name": "server.js kullanıcı uçnoktası [GET] /api/users [5] tüm kullanıcıları alabiliyor",
-        "duration": 2,
+        "duration": 3,
         "status": "passed",
         "rawStatus": "passed",
         "type": "unit",
@@ -82,7 +82,7 @@
       },
       {
         "name": "server.js kullanıcı uçnoktası [GET] /api/users [6] doğru kullanıcıları alabiliyor",
-        "duration": 1,
+        "duration": 2,
         "status": "passed",
         "rawStatus": "passed",
         "type": "unit",
@@ -93,7 +93,7 @@
       },
       {
         "name": "server.js kullanıcı uçnoktası [GET] /api/users/:id [7] doğru kullanıcıyla cevap veriyor",
-        "duration": 3,
+        "duration": 5,
         "status": "passed",
         "rawStatus": "passed",
         "type": "unit",
