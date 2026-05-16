@@ -73,7 +73,8 @@ export default function Login({ onLogin }) {
           </button>
         </form>
         <p className="text-sm text-gray-500 text-center mt-6">
-          Bilgi: admin@example.com / password123
+          Bilgi: admin@example.com (Tam Yetki) <br /> user@example.com (Sadece
+          Okuma) <br /> Şifreler: password123
         </p>
       </div>
     </div>

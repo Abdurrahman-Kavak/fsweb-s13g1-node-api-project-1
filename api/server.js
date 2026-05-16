@@ -39,6 +39,49 @@ const protect = (req, res, next) => {
 };
 
 server.use("/api/users", protect); // Tüm /api/users isteklerini koru / Protect all /api/users routes
+server.use("/api/auth-users", protect); // Auth user isteklerini de koru
+
+// AUTH USERS (Giriş Yapan Kullanıcılar) CRUD İŞLEMLERİ
+server.get("/api/auth-users", (req, res) => {
+  res.json(authUsers);
+});
+
+server.post("/api/auth-users", (req, res) => {
+  const { name, email, password, role } = req.body;
+  if (!name || !email || !password || !role) {
+    return res.status(400).json({ message: "Lütfen tüm alanları doldurun" });
+  }
+  const newUser = {
+    id: Math.random().toString(36).substring(2, 9), // Rastgele ID
+    name,
+    email,
+    password,
+    role,
+  };
+  authUsers.push(newUser);
+  res.status(201).json(newUser);
+});
+
+server.put("/api/auth-users/:id", (req, res) => {
+  const { name, email, password, role } = req.body;
+  const index = authUsers.findIndex((u) => u.id === req.params.id);
+  if (index !== -1) {
+    authUsers[index] = { id: req.params.id, name, email, password, role };
+    res.json(authUsers[index]);
+  } else {
+    res.status(404).json({ message: "Kullanıcı bulunamadı" });
+  }
+});
+
+server.delete("/api/auth-users/:id", (req, res) => {
+  const index = authUsers.findIndex((u) => u.id === req.params.id);
+  if (index !== -1) {
+    const deletedUser = authUsers.splice(index, 1);
+    res.json(deletedUser[0]);
+  } else {
+    res.status(404).json({ message: "Kullanıcı bulunamadı" });
+  }
+});
 
 server.get("/", (req, res) => {
   res.send("API'ye hoş geldiniz!");
