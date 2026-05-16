@@ -9,6 +9,7 @@ export default function AuthUserForm({
   logs = [],
   userRole,
 }) {
+  // Yetkili form verilerini tutan state
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -17,6 +18,7 @@ export default function AuthUserForm({
     avatar: "",
   });
 
+  // Seçili bir yetkili varsa mevcut bilgileri form alanlarına doldur, yoksa boşalt
   useEffect(() => {
     if (user) {
       setFormData({
@@ -37,11 +39,14 @@ export default function AuthUserForm({
     }
   }, [user]);
 
+  // Form elemanlarında (input, select) yapılan değişiklikleri state'e aktarır
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
+  // Form onaylandığında çalışan fonksiyon
   const handleSubmit = (e) => {
     e.preventDefault();
+    // Temel form doğrulaması (Boş alan kontrolü)
     if (
       !formData.name ||
       !formData.email ||
@@ -66,6 +71,7 @@ export default function AuthUserForm({
                 : "Yeni Sistem Yetkilisi Ekle"}
             </h2>
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 relative">
+              {/* Yetkili (Auth User) form alanı */}
               <form
                 id="auth-user-form"
                 onSubmit={handleSubmit}
@@ -146,6 +152,7 @@ export default function AuthUserForm({
               </form>
             </div>
           </div>
+          {/* Eğer mevcut bir yetkili düzenleniyorsa, ona ait işlem geçmişini göster */}
           {user && (
             <div className="flex-1 w-full">
               <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-4 sm:mb-6 pb-4 border-b border-gray-200">

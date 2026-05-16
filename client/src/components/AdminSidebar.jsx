@@ -12,9 +12,12 @@ export default function AdminSidebar({
   handleDelete,
   handleAuthDelete,
 }) {
+  // Hangi sekmenin aktif olduğunu takip eden state (users veya authUsers)
   const [activeTab, setActiveTab] = useState("users");
+  // Aktif sekmeye göre ekranda listelenecek kullanıcı dizisini belirler
   const displayUsers = activeTab === "users" ? users : authUsers;
 
+  // Mobil görünümde seçim yapıldığında gizlenen, masaüstünde sabit kalan yan menü
   return (
     <div
       className={`${selectedUser || isAdding || isAddingAuth ? "hidden md:flex" : "flex"} w-full md:w-1/3 md:min-w-[320px] md:max-w-[400px] bg-white border-r border-gray-200 flex-col shadow-sm z-10`}
@@ -23,6 +26,7 @@ export default function AdminSidebar({
       <div className="flex w-full">
         <button
           onClick={() => {
+            // Kullanıcılar sekmesine tıklandığında diğer form/detay durumlarını sıfırla
             setActiveTab("users");
             setIsAdding(false);
             setIsAddingAuth(false);
@@ -38,6 +42,7 @@ export default function AdminSidebar({
         </button>
         <button
           onClick={() => {
+            // Yetkililer sekmesine tıklandığında ilgili durumları sıfırla
             setActiveTab("authUsers");
             setIsAdding(false);
             setIsAddingAuth(false);
@@ -59,12 +64,14 @@ export default function AdminSidebar({
           {displayUsers.map((user) => (
             <div
               key={user.id}
+              // Seçili kullanıcıya göre aktif stilini uygular
               className={`border p-4 rounded-xl shadow-sm transition-all cursor-pointer ${
                 selectedUser?.id === user.id
                   ? "border-indigo-500 ring-1 ring-indigo-500 bg-indigo-50"
                   : "border-gray-200 hover:border-indigo-300 bg-white"
               }`}
               onClick={() => {
+                // Bir kullanıcı kartına tıklandığında detaylarını göstermek için state'i günceller
                 setSelectedUser(user);
                 setIsAdding(false);
                 setIsAddingAuth(false);
@@ -96,6 +103,7 @@ export default function AdminSidebar({
             </p>
           )}
         </div>
+        {/* Yeni kayıt ekleme butonu (Aktif sekmeye göre kullanıcı ya da yetkili ekler) */}
         <button
           onClick={() => {
             if (activeTab === "users") {

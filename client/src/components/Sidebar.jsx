@@ -11,12 +11,15 @@ export default function Sidebar({
   handleDelete,
   handleAuthDelete,
 }) {
+  // Hangi sekmenin aktif olduğunu takip eden state (users veya authUsers)
   const [activeTab, setActiveTab] = useState("users");
+  // Aktif sekmeye göre listelenecek kullanıcı dizisi
   const displayUsers = activeTab === "users" ? users : authUsers;
 
   return (
     <div className="w-1/3 min-w-[320px] max-w-[400px] bg-white border-r border-gray-200 flex flex-col shadow-sm z-10">
       {/* 0'a 0 Bütünleşik Sekmeler (Tabs) */}
+      {/* Sadece admin yetkisi varsa iki sekmeyi göster, aksi halde sadece 'Kullanıcılar' başlığı koy */}
       {userRole === "admin" ? (
         <div className="flex w-full">
           <button
@@ -59,6 +62,7 @@ export default function Sidebar({
       {/* İçerik Alanı (Aktif sekmeye birleşik bg-gray-50) */}
       <div className="flex-1 bg-gray-50 flex flex-col overflow-hidden">
         <div className="p-5 border-b border-gray-200 flex flex-col gap-4">
+          {/* Yalnızca admin rolündeki kişiler yeni kayıt ekleme butonunu görebilir */}
           {userRole === "admin" && (
             <button
               onClick={() => {
@@ -101,6 +105,7 @@ export default function Sidebar({
                 {activeTab === "users" ? user.bio : user.email}
               </p>
               <div className="flex justify-end mt-4">
+                {/* Silme butonunu sadece adminler görebilir */}
                 {userRole === "admin" && (
                   <button
                     onClick={(e) => {

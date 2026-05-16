@@ -9,14 +9,17 @@ export default function UserForm({
   onDelete,
   userRole,
 }) {
+  // Form alanlarındaki veriyi tutan ana state
   const [formData, setFormData] = useState({
     name: "",
     bio: "",
     avatar: "",
   });
 
+  // Biyografi textarea'sının yüksekliğini dinamik ayarlamak için kullanılan referans
   const textareaRef = useRef(null);
 
+  // Seçili bir kullanıcı varsa form değerlerini doldur, yoksa formu temizle
   useEffect(() => {
     if (user) {
       setFormData({
@@ -29,6 +32,7 @@ export default function UserForm({
     }
   }, [user]);
 
+  // Biyografi metni değiştikçe textarea'nın yüksekliğini otomatik ayarlayan effect
   useEffect(() => {
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto";
@@ -37,11 +41,14 @@ export default function UserForm({
     }
   }, [formData.bio]);
 
+  // Inputlarda değişiklik olduğunda state'i güncelleyen ortak fonksiyon
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
+  // Form gönderildiğinde (submit) çalışan fonksiyon
   const handleSubmit = (e) => {
     e.preventDefault();
+    // Basit validasyon: isim ve biyografi boş olamaz
     if (!formData.name || !formData.bio) {
       return alert("Tüm alanları doldurmak zorunludur!");
     }
@@ -59,6 +66,7 @@ export default function UserForm({
               {user ? "Kullanıcıyı Düzenle" : "Yeni Kullanıcı Ekle"}
             </h2>
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 relative">
+              {/* Kullanıcı oluşturma/düzenleme formu */}
               <form
                 id="user-form"
                 onSubmit={handleSubmit}
@@ -111,6 +119,7 @@ export default function UserForm({
               </form>
             </div>
           </div>
+          {/* Sadece mevcut bir kullanıcı düzenleniyorsa İşlem Geçmişi paneli gösterilir */}
           {user && (
             <div className="flex-1 w-full">
               <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-4 sm:mb-6 pb-4 border-b border-gray-200">

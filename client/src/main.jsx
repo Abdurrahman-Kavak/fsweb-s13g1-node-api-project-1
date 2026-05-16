@@ -8,7 +8,9 @@ import { Bounce, ToastContainer } from "react-toastify";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
+    {/* Ana uygulama bileşeni */}
     <App />
+    {/* Tüm uygulamada bildirim (toast) göstermek için kullanılan container */}
     <ToastContainer
       position="bottom-right"
       autoClose={5000}
